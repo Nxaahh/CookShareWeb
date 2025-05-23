@@ -1,7 +1,0 @@
-{
-  "routes": {
-    "/CookShareWeb": {},
-    "/CookShareWeb/login": {},
-    "/CookShareWeb/register": {}
-  }
-}
