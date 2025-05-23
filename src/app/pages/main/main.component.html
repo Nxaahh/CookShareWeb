@@ -1,0 +1,76 @@
+<app-navbar (tipoSeleccionado)="filtrarRecetas($event)"></app-navbar>
+<div class="feed-container">
+  <h2 class="feed-title"> Feed de Recetas</h2>
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+  <div *ngIf="!loading && recetas.length === 0" class="alert alert-info text-center">
+    No hay recetas disponibles. 
+  </div>
+  <!-- Nuevo diseño de tarjetas de recetas -->
+  <div class="row g-3" *ngIf="!loading && recetas.length > 0">
+    <div class="col-12 col-md-6 col-lg-4" *ngFor="let receta of recetas">
+      <a [routerLink]="['/receta', receta.id]" class="text-decoration-none">
+        <div class="card receta-card-h">
+          <img 
+            [src]="receta.imagenReceta || 'https://via.placeholder.com/300x180?text=Sin+imagen'" 
+            class="card-img-top receta-img-thumb" 
+            alt="Imagen de {{ receta.titulo || receta.nombre }}">
+          <div class="card-body">
+            <h6 class="card-title text-morado mb-1">{{ receta.titulo || receta.nombre || 'Receta sin título' }}</h6>
+            <p class="card-text small text-muted mb-0">{{ receta.descripcion || 'Sin descripción.' }}</p>
+            <span class="badge bg-morado mt-2">{{ receta.categoria || 'Sin categoría' }}</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+.feed-container {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+.feed-title {
+  color: #a259c6;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.receta-card-h {
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(108, 0, 128, 0.08);
+  overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.receta-card-h:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 6px 24px rgba(108, 0, 128, 0.15);
+}
+.receta-img-thumb {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  background: #eee;
+}
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.card-text {
+  font-size: 0.97rem;
+}
+.text-morado {
+  color: #a259c6;
+}
+.bg-morado {
+  background: linear-gradient(90deg, #a259c6 0%, #6d28d9 100%);
+  color: #fff;
+}
+</style>

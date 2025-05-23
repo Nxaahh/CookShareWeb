@@ -1,0 +1,102 @@
+<app-navbar></app-navbar>
+<div class="container mt-5" *ngIf="!loading && user">
+  <div class="text-center">
+    <img [src]="user.fotoPerfil || defaultProfile" alt="Foto de perfil" class="profile-img mb-3">
+    <h2 class="text-morado">{{ '@' + user.username }}</h2>
+
+    <div class="d-flex justify-content-center gap-4 mt-3">
+      <div>
+        <span class="fw-bold text-morado" style="font-size: 1.3rem;">{{ seguidoresCount }}</span>
+        <div style="font-size: 0.95rem;">Seguidores</div>
+      </div>
+      <div>
+        <span class="fw-bold text-morado" style="font-size: 1.3rem;">{{ seguidosCount }}</span>
+        <div style="font-size: 0.95rem;">Seguidos</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="loading" class="text-center my-5">
+  <div class="spinner-border text-primary" role="status"></div>
+</div>
+
+<style>
+.profile-img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid #a259c6;
+  box-shadow: 0 2px 8px rgba(108, 0, 128, 0.10);
+}
+.text-morado {
+  color: #a259c6;
+}
+</style>
+<div class="mt-4" *ngIf="userRecipes.length > 0">
+  <h5 class="text-morado mb-3">Recetas publicadas</h5>
+  <div class="row g-3">
+    <div class="col-12 col-md-6 col-lg-4" *ngFor="let receta of userRecipes">
+      <a [routerLink]="['/receta', receta.id]" class="text-decoration-none">
+        <div class="card receta-card-h">
+          <img 
+            [src]="receta.imagenReceta || 'https://via.placeholder.com/300x180?text=Sin+imagen'" 
+            class="card-img-top receta-img-thumb" 
+            alt="Imagen de {{ receta.titulo || receta.nombre }}">
+          <div class="card-body">
+            <h6 class="card-title text-morado mb-1">{{ receta.titulo || receta.nombre }}</h6>
+            <p class="card-text small text-muted mb-0">{{ receta.descripcion }}</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+<div class="mt-4" *ngIf="isOwnProfile && likedRecipes.length > 0">
+  <h5 class="text-morado mb-3">Recetas que te gustan</h5>
+  <div class="row g-3">
+    <div class="col-12 col-md-6 col-lg-4" *ngFor="let receta of likedRecipes">
+      <a [routerLink]="['/receta', receta.id]" class="text-decoration-none">
+        <div class="card receta-card-h">
+          <img 
+            [src]="receta.imagenReceta || 'https://via.placeholder.com/300x180?text=Sin+imagen'" 
+            class="card-img-top receta-img-thumb" 
+            alt="Imagen de {{ receta.titulo || receta.nombre }}">
+          <div class="card-body">
+            <h6 class="card-title text-morado mb-1">{{ receta.titulo || receta.nombre }}</h6>
+            <p class="card-text small text-muted mb-0">{{ receta.descripcion }}</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+<style>
+.receta-card-h {
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(108, 0, 128, 0.08);
+  overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.receta-card-h:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 6px 24px rgba(108, 0, 128, 0.15);
+}
+.receta-img-thumb {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  background: #eee;
+}
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.card-text {
+  font-size: 0.97rem;
+}
+</style>

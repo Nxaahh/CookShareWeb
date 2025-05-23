@@ -1,0 +1,189 @@
+<app-navbar></app-navbar>
+<div class="container mt-5 position-relative" *ngIf="!loading && receta">
+  <!-- Imagen de la receta -->
+  <div class="receta-img-wrapper mb-3">
+    <img [src]="receta.imagenReceta" alt="Imagen de la receta" class="img-fluid receta-img-main" />
+  </div>
+
+  <!-- Botones flotantes a la derecha -->
+  <div class="floating-buttons d-flex flex-column align-items-center">
+    <button 
+      class="profile-btn mb-3"
+      *ngIf="receta?.id_usuario"
+      (click)="verPerfilAutor()"
+      aria-label="Ver perfil del autor"
+    >
+      <img 
+        [src]="receta?.fotoPerfilAutor || defaultProfile" 
+        alt="Foto de perfil del autor" 
+        class="profile-img-float"
+      />
+    </button>
+    <button class="btn btn-like-float mb-2" (click)="toggleLike()" aria-label="Me gusta">
+      <i [ngClass]="isLiked ? 'bi-heart-fill' : 'bi-heart'" class="bi"></i>
+    </button>
+    <span class="likes-count">{{ likesCount }}</span>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="receta-card px-3 py-4 mt-2">
+    <h2 class="text-morado mb-2 text-center">{{ receta?.titulo || receta?.nombre }}</h2>
+    <div class="text-center mb-2">
+      <span class="badge bg-morado me-2">{{ receta?.categoria }}</span>
+      <span *ngIf="receta?.tiempo" class="badge bg-light text-morado border border-morado ms-1">
+        ⏱ {{ receta.tiempo }}
+      </span>
+    </div>
+    <p class="receta-desc mb-3 text-center">{{ receta.descripcion }}</p>
+    <hr class="my-4 border-0" />
+
+    <h5 class="text-morado mb-2">Ingredientes</h5>
+    <ul *ngIf="receta.ingredientes && receta.ingredientes.length && receta.ingredientes[0]">
+      <li *ngFor="let ing of receta.ingredientes">{{ ing }}</li>
+    </ul>
+    <span *ngIf="receta.ingredientes && !receta.ingredientes.length">{{ receta.ingredientes }}</span>
+
+    <h5 class="text-morado mt-4 mb-2">Pasos</h5>
+    <ol *ngIf="receta.pasos && receta.pasos.length && receta.pasos[0]">
+      <li *ngFor="let paso of receta.pasos">{{ paso }}</li>
+    </ol>
+    <span *ngIf="receta.pasos && !receta.pasos.length">{{ receta.pasos }}</span>
+  </div>
+</div>
+<div *ngIf="loading" class="text-center my-5">
+  <div class="spinner-border text-primary" role="status"></div>
+</div>
+
+<style>
+/* Fondo y tarjeta */
+body, .container {
+  background: #fff !important; /* Cambia a blanco */
+}
+.receta-card {
+  background: #fff;
+  border-radius: 0; /* Sin bordes redondeados si quieres full ancho */
+  box-shadow: none; /* Elimina la sombra */
+  margin-top: 0;    /* Ajusta el margen si lo deseas */
+  position: relative;
+  z-index: 1;
+  padding-left: 0;
+  padding-right: 0;
+}
+.text-morado {
+  color: #a259c6;
+}
+.bg-morado {
+  background: linear-gradient(90deg, #a259c6 0%, #6d28d9 100%);
+  color: #fff;
+}
+.border-morado {
+  border-color: #a259c6 !important;
+}
+.receta-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  border-radius: 1.2rem;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(108, 0, 128, 0.10);
+  background: #eaeaea;
+}
+.receta-img-main {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1.2rem;
+}
+
+/* Botones flotantes */
+.floating-buttons {
+  position: absolute;
+  top: 30px;
+  right: 24px;
+  z-index: 2;
+}
+.profile-btn {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+}
+.profile-img-float {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #a259c6;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(108, 0, 128, 0.10);
+  transition: border-color 0.2s;
+}
+.profile-btn:hover .profile-img-float {
+  border-color: #6d28d9;
+}
+.btn-like-float {
+  background: #fff;
+  border: 3px solid #a259c6;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a259c6;
+  font-size: 2rem;
+  box-shadow: 0 2px 8px rgba(108, 0, 128, 0.10);
+  transition: border-color 0.2s, color 0.2s;
+  padding: 0;
+}
+.btn-like-float:hover {
+  border-color: #6d28d9;
+  color: #6d28d9;
+}
+.bi-heart-fill {
+  color: #a259c6;
+}
+.likes-count {
+  color: #a259c6;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: 2px;
+  text-align: center;
+}
+.receta-desc {
+  color: #444;
+  font-size: 1.1rem;
+}
+hr {
+  border-top: 1px solid #ccc;
+}
+</style>
+
+<style>
+/* Elimina los bordes de las tarjetas si usas .card */
+.receta-card,
+.card,
+.receta-card-h {
+  border: none !important;
+  box-shadow: 0 2px 12px rgba(108, 0, 128, 0.08); /* Mantén solo la sombra si quieres */
+}
+
+/* Elimina los bordes de las imágenes */
+.receta-img-main,
+.receta-img,
+.card-img-top,
+.receta-img-thumb {
+  border: none !important;
+}
+
+/* Si tienes <hr>, elimina su borde */
+hr {
+  border: none !important;
+  border-top: none !important;
+  height: 1px;
+  background: #eee; /* O pon background: none; si no quieres ni línea */
+  margin: 1.5rem 0;
+}
+</style>

@@ -1,0 +1,106 @@
+<div class="auth-container">
+  <div class="auth-card fade-in-up">
+    <div class="text-center mb-4">
+      <h1 class="app-title">CookShare</h1>
+      <h2 class="form-title">Crear cuenta</h2>
+      <p class="subtitle">¡Únete y comparte tus mejores recetas!</p>
+    </div>
+    <form (ngSubmit)="onRegister()">
+      <div class="mb-3">
+        <label for="fullname" class="form-label">Nombre completo</label>
+        <input type="text" id="fullname" class="form-control" [(ngModel)]="fullname" name="fullname" required autocomplete="name" />
+      </div>
+      <div class="mb-3">
+        <label for="username" class="form-label">Usuario</label>
+        <input type="text" id="username" class="form-control" [(ngModel)]="username" name="username" required autocomplete="username" />
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Correo electrónico</label>
+        <input type="email" id="email" class="form-control" [(ngModel)]="email" name="email" required autocomplete="email" />
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Contraseña</label>
+        <input type="password" id="password" class="form-control" [(ngModel)]="password" name="password" required autocomplete="new-password" />
+      </div>
+      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+      <button class="btn btn-morado w-100" type="submit">
+        <i class="bi bi-person-plus"></i> Registrarse
+      </button>
+    </form>
+    <div class="text-center mt-3">
+      <span>¿Ya tienes cuenta?</span>
+      <a routerLink="/login" class="link-morado">Inicia sesión</a>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Usa los mismos estilos que el login para mantener coherencia */
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #a259c6 0%, #6d28d9 100%);
+}
+.auth-card {
+  background: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 6px 32px rgba(108, 0, 128, 0.15);
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 400px;
+}
+.logo-icon {
+  font-size: 2.5rem;
+  color: #a259c6;
+}
+.app-title {
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: bold;
+  color: #6d28d9;
+  margin-bottom: 0.5rem;
+}
+.form-title {
+  color: #a259c6;
+  margin-bottom: 0.25rem;
+}
+.subtitle {
+  color: #6d28d9;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+.btn-morado {
+  background: linear-gradient(90deg, #a259c6 0%, #6d28d9 100%);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.btn-morado:hover {
+  background: linear-gradient(90deg, #6d28d9 0%, #a259c6 100%);
+  color: #fff;
+}
+.link-morado {
+  color: #a259c6;
+  font-weight: 500;
+  text-decoration: none;
+}
+.link-morado:hover {
+  color: #6d28d9;
+  text-decoration: underline;
+}
+
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(40px);
+  animation: fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
