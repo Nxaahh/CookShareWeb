@@ -27,6 +27,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   userRef: any;
   userListener: any;
   recipesRef: any;
+  activeTab: string = 'misRecetas'; // Por defecto mostrar "Mis recetas"
 
   constructor(
     private route: ActivatedRoute,

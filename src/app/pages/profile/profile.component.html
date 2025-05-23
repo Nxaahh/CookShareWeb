@@ -15,6 +15,62 @@
       </div>
     </div>
   </div>
+
+  <!-- Pestañas para alternar entre secciones -->
+  <ul class="nav nav-tabs custom-tabs mt-4 justify-content-center" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link tab-btn" [ngClass]="{active: activeTab === 'misRecetas'}" (click)="activeTab = 'misRecetas'" type="button" role="tab">
+        <span class="tab-icon"></span> <span class="tab-label">Mis recetas</span>
+      </button>
+    </li>
+    <li class="nav-item" role="presentation" *ngIf="isOwnProfile">
+      <button class="nav-link tab-btn" [ngClass]="{active: activeTab === 'meGustan'}" (click)="activeTab = 'meGustan'" type="button" role="tab">
+        <span class="tab-icon"></span> <span class="tab-label">Favoritas</span>
+      </button>
+    </li>
+  </ul>
+
+  <!-- Contenido de las pestañas -->
+  <div class="tab-content mt-3">
+    <div class="tab-pane fade" [ngClass]="{ 'show active': activeTab === 'misRecetas' }" *ngIf="activeTab === 'misRecetas'">
+      <div *ngIf="userRecipes.length > 0">
+        <h5 class="text-morado mb-3">Recetas publicadas</h5>
+        <div class="row g-3">
+          <div class="col-12 col-md-6 col-lg-4" *ngFor="let receta of userRecipes">
+            <a [routerLink]="['/receta', receta.id]" class="text-decoration-none">
+              <div class="card receta-card-h">
+                <img [src]="receta.imagenReceta || 'https://via.placeholder.com/300x180?text=Sin+imagen'" class="card-img-top receta-img-thumb" alt="Imagen de {{ receta.titulo || receta.nombre }}">
+                <div class="card-body">
+                  <h6 class="card-title text-morado mb-1">{{ receta.titulo || receta.nombre }}</h6>
+                  <p class="card-text small text-muted mb-0">{{ receta.descripcion }}</p>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="userRecipes.length === 0" class="alert alert-info mt-3">No has publicado ninguna receta.</div>
+    </div>
+    <div class="tab-pane fade" [ngClass]="{ 'show active': activeTab === 'meGustan' }" *ngIf="activeTab === 'meGustan' && isOwnProfile">
+      <div *ngIf="likedRecipes.length > 0">
+        <h5 class="text-morado mb-3">Recetas que te gustan</h5>
+        <div class="row g-3">
+          <div class="col-12 col-md-6 col-lg-4" *ngFor="let receta of likedRecipes">
+            <a [routerLink]="['/receta', receta.id]" class="text-decoration-none">
+              <div class="card receta-card-h">
+                <img [src]="receta.imagenReceta || 'https://via.placeholder.com/300x180?text=Sin+imagen'" class="card-img-top receta-img-thumb" alt="Imagen de {{ receta.titulo || receta.nombre }}">
+                <div class="card-body">
+                  <h6 class="card-title text-morado mb-1">{{ receta.titulo || receta.nombre }}</h6>
+                  <p class="card-text small text-muted mb-0">{{ receta.descripcion }}</p>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="likedRecipes.length === 0" class="alert alert-info mt-3">No tienes recetas marcadas como favoritas.</div>
+    </div>
+  </div>
 </div>
 <div *ngIf="loading" class="text-center my-5">
   <div class="spinner-border text-primary" role="status"></div>
@@ -33,44 +89,8 @@
   color: #a259c6;
 }
 </style>
-<div class="mt-4" *ngIf="userRecipes.length > 0">
-  <h5 class="text-morado mb-3">Recetas publicadas</h5>
-  <div class="row g-3">
-    <div class="col-12 col-md-6 col-lg-4" *ngFor="let receta of userRecipes">
-      <a [routerLink]="['/receta', receta.id]" class="text-decoration-none">
-        <div class="card receta-card-h">
-          <img 
-            [src]="receta.imagenReceta || 'https://via.placeholder.com/300x180?text=Sin+imagen'" 
-            class="card-img-top receta-img-thumb" 
-            alt="Imagen de {{ receta.titulo || receta.nombre }}">
-          <div class="card-body">
-            <h6 class="card-title text-morado mb-1">{{ receta.titulo || receta.nombre }}</h6>
-            <p class="card-text small text-muted mb-0">{{ receta.descripcion }}</p>
-          </div>
-        </div>
-      </a>
-    </div>
-  </div>
-</div>
-<div class="mt-4" *ngIf="isOwnProfile && likedRecipes.length > 0">
-  <h5 class="text-morado mb-3">Recetas que te gustan</h5>
-  <div class="row g-3">
-    <div class="col-12 col-md-6 col-lg-4" *ngFor="let receta of likedRecipes">
-      <a [routerLink]="['/receta', receta.id]" class="text-decoration-none">
-        <div class="card receta-card-h">
-          <img 
-            [src]="receta.imagenReceta || 'https://via.placeholder.com/300x180?text=Sin+imagen'" 
-            class="card-img-top receta-img-thumb" 
-            alt="Imagen de {{ receta.titulo || receta.nombre }}">
-          <div class="card-body">
-            <h6 class="card-title text-morado mb-1">{{ receta.titulo || receta.nombre }}</h6>
-            <p class="card-text small text-muted mb-0">{{ receta.descripcion }}</p>
-          </div>
-        </div>
-      </a>
-    </div>
-  </div>
-</div>
+
+
 <style>
 .receta-card-h {
   border-radius: 1rem;
@@ -98,5 +118,48 @@
 }
 .card-text {
   font-size: 0.97rem;
+}
+.custom-tabs {
+  border-bottom: none;
+  margin-bottom: 0.5rem;
+}
+.custom-tabs .nav-item {
+  margin: 0 0.3rem;
+}
+.tab-btn {
+  border: none;
+  background: #f8f9fa;
+  color: #a259c6;
+  font-weight: 600;
+  font-size: 1.08rem;
+  border-radius: 1.5rem 1.5rem 0 0;
+  padding: 0.7rem 1.5rem;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(162, 89, 198, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.tab-btn.active, .tab-btn:focus {
+  background: linear-gradient(90deg, #a259c6 0%, #6d28d9 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(108, 0, 128, 0.13);
+}
+.tab-btn:hover:not(.active) {
+  background: #ece6f6;
+  color: #6d28d9;
+}
+.tab-icon {
+  font-size: 1.25rem;
+  margin-right: 0.3rem;
+}
+.tab-label {
+  letter-spacing: 0.5px;
+}
+@media (max-width: 600px) {
+  .tab-btn {
+    font-size: 0.97rem;
+    padding: 0.5rem 0.9rem;
+  }
 }
 </style>

@@ -11,8 +11,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './navbar.component.html'
 })
 export class NavbarComponent {
-  tipos: string[] = ["Postres", "Platos principales", "Bebidas", "Entrantes", "Sopas", "Ensaladas"];
-  selectedTipo: string = '';
+
 
   @Output() tipoSeleccionado = new EventEmitter<string>();
 
@@ -23,7 +22,5 @@ export class NavbarComponent {
     this.router.navigate(['/login']);
   }
 
-  onTipoChange() {
-    this.tipoSeleccionado.emit(this.selectedTipo);
-  }
+ 
 }

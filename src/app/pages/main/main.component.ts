@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Database, ref, get } from '@angular/fire/database';
 import { NavbarComponent } from '../../shared/navbar/navbar.component';
 import { RouterModule, Router } from '@angular/router'; // <-- Add Router here
+import { FormsModule } from '@angular/forms'; // Añade esta línea
 
 @Component({
   selector: 'app-main',
@@ -10,7 +11,8 @@ import { RouterModule, Router } from '@angular/router'; // <-- Add Router here
   imports: [
     CommonModule,
     NavbarComponent,
-    RouterModule, // <-- Add this line
+    RouterModule,
+    FormsModule // Añade FormsModule aquí
   ],
   templateUrl: './main.component.html'
 })
@@ -19,6 +21,18 @@ export class MainComponent implements OnInit {
   todasLasRecetas: any[] = [];
   loading = true;
 
+  // Variables para búsqueda y filtro
+  busquedaNombre: string = '';
+  busquedaTipo: string = '';
+  tiposReceta: string[] = [
+    'Postres',
+    'Platos principales',
+    'Bebidas',
+    'Entrantes',
+    'Sopas',
+    'Ensaladas'
+  ];
+
   constructor(private db: Database, private router: Router) {}
 
   async ngOnInit() {
@@ -26,9 +40,6 @@ export class MainComponent implements OnInit {
       const recetasRef = ref(this.db, 'recipes');
       const snapshot = await get(recetasRef);
       if (snapshot.exists()) {
-        // Cambia esta línea:
-        // this.todasLasRecetas = Object.values(snapshot.val());
-        // Por esto:
         this.todasLasRecetas = Object.entries(snapshot.val()).map(([id, receta]: any) => ({
           id,
           ...receta
@@ -45,18 +56,20 @@ export class MainComponent implements OnInit {
     this.loading = false;
   }
 
-  filtrarRecetas(tipo: string) {
-    if (!tipo) {
-      this.recetas = [...this.todasLasRecetas];
-    } else {
-      this.recetas = this.todasLasRecetas.filter(r =>
-        (r.categoria || r.tipo || '').toLowerCase() === tipo.toLowerCase()
-      );
-    }
+  // Método para búsqueda y filtro combinados
+  filtrarRecetas() {
+    this.recetas = this.todasLasRecetas.filter(r => {
+      const coincideNombre = this.busquedaNombre
+        ? (r.titulo || r.nombre || '').toLowerCase().includes(this.busquedaNombre.toLowerCase())
+        : true;
+      const coincideTipo = this.busquedaTipo
+        ? (r.categoria || r.tipo || '').toLowerCase() === this.busquedaTipo.toLowerCase()
+        : true;
+      return coincideNombre && coincideTipo;
+    });
   }
 
   verDetalle(receta: any) {
-    // Suponiendo que cada receta tiene un campo 'id' o 'id_receta'
     const id = receta.id || receta.id_receta;
     if (id) {
       this.router.navigate(['/receta', id]);

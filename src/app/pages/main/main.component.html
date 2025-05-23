@@ -1,26 +1,46 @@
-<app-navbar (tipoSeleccionado)="filtrarRecetas($event)"></app-navbar>
-<div class="feed-container">
-  <h2 class="feed-title"> Feed de Recetas</h2>
+<app-navbar (tipoSeleccionado)="filtrarRecetas()"></app-navbar>
+<div class="explore-container">
+  <h2 class="explore-title">Explora Recetas</h2>
+  <div class="explore-searchbar">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Buscar por nombre..."
+      [(ngModel)]="busquedaNombre"
+      (input)="filtrarRecetas()"
+    />
+    <select
+      class="form-select"
+      [(ngModel)]="busquedaTipo"
+      (change)="filtrarRecetas()"
+    >
+      <option value="">Todos los tipos</option>
+      <option value="Postres">Postres</option>
+      <option value="Platos principales">Platos principales</option>
+      <option value="Bebidas">Bebidas</option>
+      <option value="Entrantes">Entrantes</option>
+      <option value="Sopas">Sopas</option>
+      <option value="Ensaladas">Ensaladas</option>
+    </select>
+  </div>
   <div *ngIf="loading" class="text-center my-5">
     <div class="spinner-border text-primary" role="status"></div>
   </div>
   <div *ngIf="!loading && recetas.length === 0" class="alert alert-info text-center">
-    No hay recetas disponibles. 
+    No hay recetas disponibles.
   </div>
-  <!-- Nuevo diseño de tarjetas de recetas -->
-  <div class="row g-3" *ngIf="!loading && recetas.length > 0">
-    <div class="col-12 col-md-6 col-lg-4" *ngFor="let receta of recetas">
-      <a [routerLink]="['/receta', receta.id]" class="text-decoration-none">
-        <div class="card receta-card-h">
-          <img 
-            [src]="receta.imagenReceta || 'https://via.placeholder.com/300x180?text=Sin+imagen'" 
-            class="card-img-top receta-img-thumb" 
-            alt="Imagen de {{ receta.titulo || receta.nombre }}">
-          <div class="card-body">
-            <h6 class="card-title text-morado mb-1">{{ receta.titulo || receta.nombre || 'Receta sin título' }}</h6>
-            <p class="card-text small text-muted mb-0">{{ receta.descripcion || 'Sin descripción.' }}</p>
-            <span class="badge bg-morado mt-2">{{ receta.categoria || 'Sin categoría' }}</span>
-          </div>
+  <div class="explore-grid" *ngIf="!loading && recetas.length > 0">
+    <div class="explore-card" *ngFor="let receta of recetas">
+      <a [routerLink]="['/receta', receta.id]" class="explore-link">
+        <img
+          [src]="receta.imagenReceta || 'https://via.placeholder.com/300x180?text=Sin+imagen'"
+          class="explore-img"
+          alt="Imagen de {{ receta.titulo || receta.nombre }}"
+        />
+        <div class="explore-info">
+          <h6 class="explore-card-title">{{ receta.titulo || receta.nombre || 'Receta sin título' }}</h6>
+          <span class="badge bg-morado mt-1 mb-1">{{ receta.categoria || 'Sin categoría' }}</span>
+          <p class="explore-card-desc">{{ receta.descripcion || 'Sin descripción.' }}</p>
         </div>
       </a>
     </div>
@@ -28,49 +48,96 @@
 </div>
 
 <style>
-.feed-container {
-  max-width: 1100px;
+.explore-container {
+  max-width: 1200px;
   margin: 2rem auto;
   padding: 1rem;
 }
-.feed-title {
+.explore-title {
   color: #a259c6;
   font-weight: bold;
   margin-bottom: 2rem;
   text-align: center;
+  letter-spacing: 1px;
 }
-.receta-card-h {
-  border-radius: 1rem;
-  box-shadow: 0 2px 8px rgba(108, 0, 128, 0.08);
+.explore-searchbar {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+.explore-searchbar input,
+.explore-searchbar select {
+  max-width: 250px;
+}
+.explore-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+.explore-card {
+  background: #fff;
+  border-radius: 1.2rem;
+  box-shadow: 0 2px 12px rgba(108, 0, 128, 0.08);
   overflow: hidden;
   transition: transform 0.15s, box-shadow 0.15s;
   cursor: pointer;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
-.receta-card-h:hover {
+.explore-card:hover {
   transform: translateY(-4px) scale(1.03);
   box-shadow: 0 6px 24px rgba(108, 0, 128, 0.15);
 }
-.receta-img-thumb {
+.explore-link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.explore-img {
   width: 100%;
   height: 180px;
   object-fit: cover;
   background: #eee;
 }
-.card-title {
+.explore-info {
+  padding: 1rem 1.2rem 1.2rem 1.2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.explore-card-title {
   font-size: 1.1rem;
   font-weight: 600;
-}
-.card-text {
-  font-size: 0.97rem;
-}
-.text-morado {
   color: #a259c6;
+  margin-bottom: 0.3rem;
+}
+.explore-card-desc {
+  font-size: 0.97rem;
+  color: #444;
+  margin-bottom: 0;
 }
 .bg-morado {
   background: linear-gradient(90deg, #a259c6 0%, #6d28d9 100%);
   color: #fff;
+  font-size: 0.95rem;
+  border-radius: 0.7rem;
+  padding: 0.2rem 0.8rem;
+  margin-bottom: 0.5rem;
+}
+@media (max-width: 600px) {
+  .explore-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  .explore-searchbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 </style>
