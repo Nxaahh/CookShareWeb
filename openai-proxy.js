@@ -5,8 +5,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const OPENAI_API_KEY = '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';
-
+require('dotenv').config();
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 app.post('/api/openai', async (req, res) => {
   try {
     const { prompt } = req.body;
