@@ -1,5 +1,6 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http'; // Añade esta importación
 
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
@@ -12,6 +13,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
+    provideHttpClient(), // Añade esta línea
     provideFirebaseApp(() => initializeApp({
       apiKey: "AIzaSyC0cfTmaqsbSRMqPSklwkyS_NL_pQ4XbMk",
       authDomain: "cookshare2-fa2ff.firebaseapp.com",

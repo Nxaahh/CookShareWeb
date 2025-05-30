@@ -15,4 +15,8 @@ export const routes: Routes = [
     component: RecipeDetailComponent
   },
   { path: 'perfil/:id', component: ProfileComponent },
+  {
+    path: 'ai-assistant',
+    loadComponent: () => import('./pages/ai-assistant/ai-assistant.component').then(m => m.AiAssistantComponent)
+  },
 ];

@@ -1,0 +1,30 @@
+<app-navbar></app-navbar>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body p-5">
+          <h2 class="mb-4 text-center fw-bold" style="background: linear-gradient(90deg, #ff9966, #ff5e62); -webkit-background-clip: text; color: transparent;">Asistente IA <span style="font-size:1.2em;"></span></h2>
+          <form (ngSubmit)="askAI()">
+            <div class="mb-3">
+              <label for="userQuery" class="form-label fw-semibold">Cuentale al asistente tus necesidades o lo que necesitas:</label>
+              <textarea [(ngModel)]="userQuery" name="userQuery" id="userQuery" class="form-control rounded-3 shadow-sm" rows="3" placeholder="EJ. Tengo arroz y pollo, ¿Que puedo cocinar?" [disabled]="loading"></textarea>
+            </div>
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary btn-lg rounded-pill" [disabled]="loading">
+                {{ loading ? 'Pensando...' : 'Preguntar' }}
+              </button>
+            </div>
+          </form>
+          <div class="chat-history mt-4 mb-2" style="max-height: 350px; overflow-y: auto;">
+            <div *ngFor="let msg of conversation" [ngClass]="{'text-end': msg.sender === 'user', 'text-start': msg.sender === 'ai'}">
+              <div [ngClass]="msg.sender === 'user' ? 'alert alert-primary d-inline-block rounded-pill px-4 py-2 mb-2' : 'alert alert-info d-inline-block rounded-pill px-4 py-2 mb-2'" style="max-width: 80%;">
+                <span style="white-space: pre-line;">{{ msg.text }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
