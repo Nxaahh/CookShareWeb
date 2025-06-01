@@ -30,5 +30,5 @@ app.post('/api/openai', async (req, res) => {
   }
 });
 
-const PORT = 3002;
+const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => console.log(`OpenAI proxy running on port ${PORT}`));
