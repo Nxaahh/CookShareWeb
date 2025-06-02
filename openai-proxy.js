@@ -7,6 +7,7 @@ app.use(express.json());
 
 require('dotenv').config();
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+console.log(OPENAI_API_KEY);
 app.post('/api/openai', async (req, res) => {
   try {
     const { prompt } = req.body;
