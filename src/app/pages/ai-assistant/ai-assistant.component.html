@@ -18,7 +18,8 @@
           </form>
           <div class="chat-history mt-4 mb-2" style="max-height: 350px; overflow-y: auto;">
             <div *ngFor="let msg of conversation" [ngClass]="{'text-end': msg.sender === 'user', 'text-start': msg.sender === 'ai'}">
-              <div [ngClass]="msg.sender === 'user' ? 'alert alert-primary d-inline-block rounded-pill px-4 py-2 mb-2' : 'alert alert-info d-inline-block rounded-pill px-4 py-2 mb-2'" style="max-width: 80%;">
+              <div [ngClass]="msg.sender === 'user' ? 'alert alert-primary d-inline-block rounded-pill px-4 py-2 mb-2' : 'alert alert-info d-inline-block rounded-pill px-4 py-2 mb-2'"
+                   style="max-width: 80%; word-break: break-word; border-radius: 20px; padding: 16px; background: #e0f7fa; margin: 8px 0;">
                 <span style="white-space: pre-line;">{{ msg.text }}</span>
               </div>
             </div>

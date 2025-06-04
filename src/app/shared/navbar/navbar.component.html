@@ -1,13 +1,18 @@
 <nav class="navbar navbar-expand-lg shadow-sm custom-navbar">
   <div class="container">
-    <a class="navbar-brand fw-bold text-white" [routerLink]="['/main']">CookShare</a>
+    <a class="navbar-brand fw-bold text-white" [routerLink]="['/feed']">CookShare</a>
     <div class="collapse navbar-collapse justify-content-end">
       <ul class="navbar-nav align-items-center">
         <li class="nav-item">
           <a class="nav-link custom-link" [routerLink]="['/feed']">Explorar</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/ai-assistant">AI Assistant</a>
+          <a class="nav-link custom-link" routerLink="/crear-receta">
+             Crear Receta
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link custom-link" routerLink="/ai-assistant">AI Assistant</a>
         </li>
         <li class="nav-item">
           <a class="nav-link custom-link" [routerLink]="['/perfil', authService.currentUserId]">Perfil</a>
