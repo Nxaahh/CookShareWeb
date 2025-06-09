@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RecetasService,Receta } from '../../services/recetas.service';
+
 import { v4 as uuidv4 } from 'uuid';
 import { Auth } from '@angular/fire/auth';
 import { CommonModule } from '@angular/common';
@@ -124,4 +125,5 @@ export class CrearRecetaComponent {
   trackByIndex(index: number, item: any): number {
     return index;
   }
+
 }

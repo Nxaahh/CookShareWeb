@@ -19,4 +19,9 @@ export const routes: Routes = [
     path: 'ai-assistant',
     loadComponent: () => import('./pages/ai-assistant/ai-assistant.component').then(m => m.AiAssistantComponent)
   },
+  {
+    path: 'crear-receta',
+    loadComponent: () => import('./pages/crear-receta/crear-receta.component').then(m => m.CrearRecetaComponent)
+  },
+  {path: '**', redirectTo: 'feed'}
 ];
