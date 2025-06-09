@@ -20,4 +20,6 @@ describe('CrearRecetaComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 });
+
