@@ -1,0 +1,96 @@
+<app-navbar></app-navbar>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+      <div class="card shadow-lg border-0 rounded-4 p-4">
+        <div class="card-body">
+          <h2 class="mb-4 text-center fw-bold text-gradient">Crear Receta</h2>
+          <div *ngIf="error" class="alert alert-danger text-center">
+            {{ error }}
+          </div>
+          
+          <form (ngSubmit)="guardarReceta()">
+            <div class="mb-3">
+              <input type="text" class="form-control rounded-3 shadow-sm" placeholder="Título" [(ngModel)]="titulo" name="titulo" required />
+            </div>
+
+            <div class="mb-3">
+              <textarea class="form-control rounded-3 shadow-sm" rows="3" placeholder="Descripción" [(ngModel)]="descripcion" name="descripcion"></textarea>
+            </div>
+
+            <div class="mb-3">
+              <input type="number" class="form-control rounded-3 shadow-sm" placeholder="Tiempo estimado (min)" [(ngModel)]="tiempoEstimado" name="tiempoEstimado" />
+            </div>
+
+            <div class="mb-3">
+              <select class="form-select rounded-3 shadow-sm" [(ngModel)]="categoria" name="categoria">
+                <option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</option>
+              </select>
+            </div>
+
+            <div class="mb-4 text-center">
+              <input type="file" class="form-control" (change)="onImagenSeleccionada($event)" />
+              <img *ngIf="imagenPreview" [src]="imagenPreview" alt="Vista previa" class="img-fluid rounded mt-3 shadow-sm" style="max-height: 200px;" />
+            </div>
+
+            <div class="mb-4">
+              <h5 class="text-morado fw-bold">Ingredientes</h5>
+              <div *ngFor="let ing of ingredientes; let i = index; trackBy: trackByIndex" class="mb-2">
+                <input
+                  class="form-control rounded-3 shadow-sm"
+                  [(ngModel)]="ingredientes[i]"
+                  name="ingrediente{{i}}"
+                  placeholder="Ingrediente"
+                />
+              </div>
+              
+              <button type="button" class="btn btn-outline-primary rounded-pill mt-2" (click)="agregarIngrediente()">+ Ingrediente</button>
+            </div>
+
+            <div class="mb-4">
+              <h5 class="text-morado fw-bold">Pasos</h5>
+              <div *ngFor="let paso of pasos; let i = index; trackBy: trackByIndex" class="mb-2">
+                <input
+                  class="form-control rounded-3 shadow-sm"
+                  [(ngModel)]="pasos[i]"
+                  name="paso{{i}}"
+                  placeholder="Paso"
+                />
+              </div>
+              
+              <button type="button" class="btn btn-outline-secondary rounded-pill mt-2" (click)="agregarPaso()">+ Paso</button>
+            </div>
+
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-morado btn-lg rounded-pill">
+                Guardar Receta
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.text-gradient {
+  background: linear-gradient(90deg, #a259c6, #6d28d9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.text-morado {
+  color: #a259c6;
+}
+.btn-morado {
+  background: linear-gradient(90deg, #a259c6 0%, #6d28d9 100%);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  transition: background 0.2s;
+}
+.btn-morado:hover {
+  background: linear-gradient(90deg, #6d28d9 0%, #a259c6 100%);
+}
+</style>
