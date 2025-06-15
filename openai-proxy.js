@@ -16,7 +16,7 @@ app.post('/api/openai', async (req, res) => {
       {
         model: 'gpt-3.5-turbo',
         messages: [{ role: 'user', content: prompt }],
-        max_tokens: 256
+        max_tokens: 750
       },
       {
         headers: {

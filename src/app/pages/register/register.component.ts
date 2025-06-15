@@ -66,7 +66,23 @@ export class RegisterComponent {
 
       this.router.navigate(['/login']);
     } catch (err: any) {
-      this.error = err.message;
+      const rawMessage = err.code || err.message || '';
+      this.error = this.traducirErrorFirebase(rawMessage);
+    }
+    
+  }
+  private traducirErrorFirebase(mensaje: string): string {
+    if (mensaje.includes('email-already-in-use')) {
+      return 'Este correo ya está registrado';
+    } else if (mensaje.includes('invalid-email')) {
+      return 'El correo no es válido';
+    } else if (mensaje.includes('weak-password')) {
+      return 'La contraseña debe tener al menos 6 caracteres';
+    } else if (mensaje.includes('operation-not-allowed')) {
+      return 'Registro de correo deshabilitado';
+    } else {
+      return 'Error al registrar el usuario';
     }
   }
+  
 }

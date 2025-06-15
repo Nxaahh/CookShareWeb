@@ -26,7 +26,23 @@ export class LoginComponent {
       await this.authService.login(this.email, this.password);
       this.router.navigate(['/feed']); // Redirige al feed tras login
     } catch (err: any) {
-      this.error = err.message;
+      const rawMessage = err.code || err.message || '';
+      this.error = this.traducirErrorFirebase(rawMessage);
+    }
+    
+  }
+  private traducirErrorFirebase(mensaje: string): string {
+    if (mensaje.includes('user-not-found')) {
+      return 'No existe una cuenta con este correo';
+    } else if (mensaje.includes('wrong-password')) {
+      return 'La contraseña es incorrecta';
+    } else if (mensaje.includes('invalid-email')) {
+      return 'El correo no es válido';
+    } else if (mensaje.includes('too-many-requests')) {
+      return 'Demasiados intentos. Intenta más tarde';
+    } else {
+      return 'Error al iniciar sesión';
     }
   }
+  
 }
